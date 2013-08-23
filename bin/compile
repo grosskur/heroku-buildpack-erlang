@@ -52,8 +52,13 @@ if [ ! -e "rebar" ]; then
 fi
 
 echo "-----> Building with Rebar"
+REBAR_CONFIG_FLAG=
+if [ -f ./public.rebar.config ]
+then
+  REBAR_CONFIG_FLAG='--config public.rebar.config'
+fi
 unset GIT_DIR
-./rebar get-deps compile 2>&1 | sed -u 's/^/       /'
+./rebar get-deps compile $REBAR_CONFIG_FLAG 2>&1 | sed -u 's/^/       /'
 if [ ${PIPESTATUS[0]} -ne 0 ]; then
   echo "-----> Build failed"
   exit 1
